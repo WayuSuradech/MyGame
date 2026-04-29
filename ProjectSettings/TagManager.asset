@@ -12,7 +12,7 @@ TagManager:
   - Water
   - UI
   - Monster
-  - 
+  - Pushable
   - 
   - 
   - 
@@ -41,7 +41,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-<<<<<<< Updated upstream
   - name: Layer 1
     uniqueID: 2425651459
     locked: 0
@@ -51,7 +50,5 @@ TagManager:
   - name: Layer 3
     uniqueID: 4189426099
     locked: 0
-=======
->>>>>>> Stashed changes
   m_RenderingLayers:
   - Default

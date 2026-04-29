@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -10,9 +10,14 @@ public class PlayerController : MonoBehaviour
     public LayerMask _whatStopWalk;       // Monster layer (เดินทะลุไม่ได้ แต่ dash ผ่านได้)
 
     [Header("Dash")]
-    public int _dashGrids = 2;       // กระโดดกี่ grid
+    public int _dashGrids = 2;            // กระโดดกี่ grid
     public float _dashCooldown = 1f;      // cooldown ก่อน dash ได้อีก
-    public float _dashSpeed = 20f;     // ความเร็วตอน dash
+    public float _dashSpeed = 20f;        // ความเร็วตอน dash
+
+    [Header("Push")]
+    public KeyCode _pushKey = KeyCode.E;
+    public float _pushCheckDistance = 1.1f;
+    public LayerMask _pushableLayer;      // Layer ของ Block ที่ผลักได้
 
     [Header("Animation")]
     public Animator _anim;
@@ -32,6 +37,10 @@ public class PlayerController : MonoBehaviour
     {
         // cooldown นับถอยหลัง
         if (_dashTimer > 0f) _dashTimer -= Time.deltaTime;
+
+        // กด E เพื่อผลัก Block
+        if (Input.GetKeyDown(_pushKey))
+            TryPushBlock();
 
         // จับ Shift ทันทีทุก frame
         float h = Input.GetAxisRaw("Horizontal");
@@ -144,6 +153,24 @@ public class PlayerController : MonoBehaviour
         Debug.Log($"[Player] Dash → {destination}");
     }
 
+    // ── ผลัก Block ───────────────────────────────────────────
+    void TryPushBlock()
+    {
+        Vector2 dir2D = new Vector2(_lastDir.x, _lastDir.y);
+
+        RaycastHit2D hit = Physics2D.Raycast(
+            transform.position,
+            dir2D,
+            _pushCheckDistance,
+            _pushableLayer
+        );
+
+        if (hit.collider == null) return;
+
+        PushableBlock block = hit.collider.GetComponent<PushableBlock>();
+        block?.TryPush(dir2D);
+    }
+
     // ── ตรวจ collision ────────────────────────────────────────
     bool BlockedByWall(Vector3 pos)
     {
@@ -154,6 +181,7 @@ public class PlayerController : MonoBehaviour
     {
         return Physics2D.OverlapCircle(pos, 0.2f, _whatStopWalk);
     }
+
     public void Teleport(Vector3 newPosition)
     {
         // หยุด dash และรีเซ็ต state
