@@ -127,5 +127,18 @@ namespace Cainos.PixelArtTopDown_Basic
             yield return new WaitForSeconds(dashCooldown);
             isDashCooldown = false;
         }
+        public void Teleport(Vector3 newPosition)
+        {
+            // หยุด Coroutine ทั้งหมดที่กำลังวิ่งอยู่
+            StopAllCoroutines();
+
+            // รีเซ็ต state
+            isMoving = false;
+            animator.SetBool("IsMoving", false);
+            isDashCooldown = false;
+
+            // ย้ายตำแหน่ง
+            transform.position = newPosition;
+        }
     }
 }
