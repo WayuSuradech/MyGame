@@ -1,5 +1,4 @@
 using UnityEngine;
-using Cainos.PixelArtTopDown_Basic;
 
 public class Door : MonoBehaviour
 {
@@ -14,8 +13,7 @@ public class Door : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
-            // หยุด Coroutine ทั้งหมดของ Controller ก่อน แล้วค่อย teleport
-            TopDownCharacterController controller = other.GetComponent<TopDownCharacterController>();
+            PlayerController controller = other.GetComponent<PlayerController>();
             if (controller != null)
             {
                 controller.Teleport(destination.position);

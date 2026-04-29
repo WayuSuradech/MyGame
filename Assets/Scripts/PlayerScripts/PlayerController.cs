@@ -154,4 +154,14 @@ public class PlayerController : MonoBehaviour
     {
         return Physics2D.OverlapCircle(pos, 0.2f, _whatStopWalk);
     }
+    public void Teleport(Vector3 newPosition)
+    {
+        // หยุด dash และรีเซ็ต state
+        _isDashing = false;
+        _dashTimer = 0f;
+
+        // ย้ายทั้ง player และ movePoint ไปพร้อมกัน
+        transform.position = newPosition;
+        _movePoint.position = newPosition;
+    }
 }
